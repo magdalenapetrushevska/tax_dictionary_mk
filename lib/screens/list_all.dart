@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:html/parser.dart' as parser; 
+import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
 //fetchArticles
@@ -15,38 +15,33 @@ class AllWordsScreen extends StatefulWidget {
 class _AllWordsScreenState extends State<AllWordsScreen> {
   _AllWordsScreenState();
 
-
   late Future _completedActivities;
 
-Future<List<String>> extractData() async { 
-	
-	// Getting the response from the targeted url 
-	final response = 
-		await http.Client().get(Uri.parse('http://www.ujp.gov.mk/mk/recnik/poimi')); 
-	
-		// Status Code 200 means response has been received successfully 
-	if (response.statusCode == 200) { 
-		
-	// Getting the html document from the response 
-	var document = parser.parse(response.body); 
-	try { 
+  Future<List<String>> extractData() async {
+    // Getting the response from the targeted url
+    final response = await http.Client()
+        .get(Uri.parse('http://www.ujp.gov.mk/mk/recnik/poimi'));
 
-     List<String> newCompltedActivities = [];
+    // Status Code 200 means response has been received successfully
+    if (response.statusCode == 200) {
+      // Getting the html document from the response
+      var document = parser.parse(response.body);
+      try {
+        List<String> newCompltedActivities = [];
 
-    var retreivedData = document.getElementsByClassName('tbrow').toList();
-    for (var element in retreivedData) {
-      newCompltedActivities.add(element.text.trim());
+        var retreivedData = document.getElementsByClassName('tbrow').toList();
+        for (var element in retreivedData) {
+          newCompltedActivities.add(element.text.trim());
+        }
+
+        return newCompltedActivities;
+      } catch (e) {
+        return ['', '', 'ERROR!'];
+      }
+    } else {
+      return ['', '', 'ERROR: ${response.statusCode}.'];
     }
-    
-    return newCompltedActivities;
-	} catch (e) { 
-		return ['', '', 'ERROR!']; 
-	} 
-	} else { 
-	return ['', '', 'ERROR: ${response.statusCode}.']; 
-	} 
-} 
-
+  }
 
   @override
   void initState() {
@@ -76,7 +71,7 @@ Future<List<String>> extractData() async {
                       return <Widget>[
                         SliverAppBar(
                           title: const Text('Сите термини'),
-                          backgroundColor: Colors.pink[700],
+                          backgroundColor: Colors.pink[400],
                           floating: true,
                           expandedHeight: 70.0,
                           forceElevated: innerBoxIsScrolled,

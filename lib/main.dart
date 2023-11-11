@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:tax_dictionary_mk/screens/list_all.dart';
 
 void main() {
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Даночен речник',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Даночен речник'),
@@ -33,7 +33,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,29 +40,26 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body:Center(
+      body: Center(
         child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const AllWordsScreen()));
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 30.0, vertical: 15.0),
-                                primary: Colors.deepPurpleAccent,
-                                shape: const StadiumBorder(),
-                              ),
-                              child: const Text(
-                                "Сите термини",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
-                            ),
-      ),   
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AllWordsScreen()));
+          },
+          style: ElevatedButton.styleFrom(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
+            primary: Colors.pink[400],
+            shape: const StadiumBorder(),
+          ),
+          child: const Text(
+            "Сите термини",
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+        ),
+      ),
     );
   }
 }
-
