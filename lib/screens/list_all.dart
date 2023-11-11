@@ -49,6 +49,18 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
     super.initState();
   }
 
+  void _getDescription(int index) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text('Vrednosta na kliknation index e: $index'),
+        );
+      },
+    );
+  }
+
+
   int index = 0;
 
   @override
@@ -84,7 +96,12 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return Column(
                             children: [
-                              Text(extractedData[index]),
+                              InkWell(
+                                child: Text(extractedData[index]),
+                                onTap: () {
+                                  _getDescription(index);
+                                },
+                              ),
                               const Divider(
                                 color: Colors.black,
                                 height: 25,
@@ -108,4 +125,5 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
       },
     );
   }
+  
 }
