@@ -64,16 +64,21 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
         var finalLink = '';
         var pp = element.children;
         var dol = element.children.length;
+        var baraj = '';
         if (dol == 2) {
           var startIndex = pp[1].outerHtml.indexOf('"');
           var endIndex = pp[1].outerHtml.lastIndexOf('"');
           var tailString = pp[1].outerHtml.substring(startIndex + 1, endIndex);
           finalLink = startString + tailString;
+           var hashTagIndex = tailString.indexOf('#');
+            baraj = tailString.substring(hashTagIndex+1);
         } else {
           var startIndex = pp[0].outerHtml.indexOf('"');
           var endIndex = pp[0].outerHtml.lastIndexOf('"');
           var tailString = pp[0].outerHtml.substring(startIndex + 1, endIndex);
           finalLink = startString + tailString;
+          var hashTagIndex = tailString.indexOf('#');
+            baraj = tailString.substring(hashTagIndex+1);
         }
 
         final responseForDefinition =
@@ -81,12 +86,9 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
 
         BeautifulSoup bs = BeautifulSoup(responseForDefinition.body);
 
+
         var definition_element = bs
-            .find('a', attrs: {'name': '443'})
-            ?.parent
-            ?.parent
-            ?.findNextElement('p')
-            ?.innerHtml;
+            .find('a', attrs: {'name': baraj})!.nextElement?.nextElement?.text;
 
         var newCompltedActivity = Entry(
           id: id.toString(),
