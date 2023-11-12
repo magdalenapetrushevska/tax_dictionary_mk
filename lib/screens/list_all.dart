@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 import 'package:tax_dictionary_mk/models/entry.dart';
 import 'package:tax_dictionary_mk/widgets/entry_widget.dart';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 
-//fetchArticles
 class AllWordsScreen extends StatefulWidget {
   const AllWordsScreen({
     Key? key,
@@ -19,31 +17,6 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
   _AllWordsScreenState();
 
   late Future _completedActivities;
-
-  // Future<List<String>> extractData() async {
-  //   // Getting the response from the targeted url
-  //   final response = await http.Client()
-  //       .get(Uri.parse('http://www.ujp.gov.mk/mk/recnik/poimi'));
-
-  //   // Status Code 200 means response has been received successfully
-  //   if (response.statusCode == 200) {
-  //     // Getting the html document from the response
-  //     var document = parser.parse(response.body);
-  //     try {
-  //       List<String> newCompltedActivities = [];
-  //       var retreivedData = document.getElementsByClassName('tbrow').toList();
-  //       for (var element in retreivedData) {
-  //         newCompltedActivities.add(element.text.trim());
-  //       }
-
-  //       return newCompltedActivities;
-  //     } catch (e) {
-  //       return ['', '', 'ERROR!'];
-  //     }
-  //   } else {
-  //     return ['', '', 'ERROR: ${response.statusCode}.'];
-  //   }
-  // }
 
   Future<List<Entry>> extractData() async {
     final response = await http.Client()
@@ -70,15 +43,15 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
           var endIndex = pp[1].outerHtml.lastIndexOf('"');
           var tailString = pp[1].outerHtml.substring(startIndex + 1, endIndex);
           finalLink = startString + tailString;
-           var hashTagIndex = tailString.indexOf('#');
-            baraj = tailString.substring(hashTagIndex+1);
+          var hashTagIndex = tailString.indexOf('#');
+          baraj = tailString.substring(hashTagIndex + 1);
         } else {
           var startIndex = pp[0].outerHtml.indexOf('"');
           var endIndex = pp[0].outerHtml.lastIndexOf('"');
           var tailString = pp[0].outerHtml.substring(startIndex + 1, endIndex);
           finalLink = startString + tailString;
           var hashTagIndex = tailString.indexOf('#');
-            baraj = tailString.substring(hashTagIndex+1);
+          baraj = tailString.substring(hashTagIndex + 1);
         }
 
         final responseForDefinition =
@@ -86,9 +59,11 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
 
         BeautifulSoup bs = BeautifulSoup(responseForDefinition.body);
 
-
         var definition_element = bs
-            .find('a', attrs: {'name': baraj})!.nextElement?.nextElement?.text;
+            .find('a', attrs: {'name': baraj})!
+            .nextElement
+            ?.nextElement
+            ?.text;
 
         var newCompltedActivity = Entry(
           id: id.toString(),
@@ -101,40 +76,6 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
     }
     return newCompltedActivities;
   }
-
-  // Future<List<String>> extractLinks() async {
-  //   // Getting the response from the targeted url
-  //   final response = await http.Client()
-  //       .get(Uri.parse('http://www.ujp.gov.mk/mk/recnik/poimi'));
-
-  //   // Status Code 200 means response has been received successfully
-  //   if (response.statusCode == 200) {
-  //     // Getting the html document from the response
-  //     var document = parser.parse(response.body);
-  //     try {
-  //       List<String> newLinks = [];
-  //       var startString = 'http://www.ujp.gov.mk';
-  //       var retreivedData = document.getElementsByClassName('tbrow').toList();
-  //       for (var element in retreivedData) {
-  //         var pp = element.children;
-  //         for (var i in pp)
-  //         {
-  //           var startIndex = i.outerHtml.indexOf('"');
-  //           var endIndex = i.outerHtml.lastIndexOf('"');
-  //           var tailString = i.outerHtml.substring(startIndex+1,endIndex);
-  //           var finalLink = startString + tailString;
-  //           newLinks.add(finalLink);
-  //         }
-  //       }
-
-  //       return newLinks;
-  //     } catch (e) {
-  //       return ['', '', 'ERROR!'];
-  //     }
-  //   } else {
-  //     return ['', '', 'ERROR: ${response.statusCode}.'];
-  //   }
-  // }
 
   @override
   void initState() {

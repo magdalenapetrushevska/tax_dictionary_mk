@@ -1,8 +1,4 @@
-//MyActivityWidget
-//import 'package:flutter/material.dart';
-
 import 'package:flutter/material.dart';
-
 
 class EntryWidget extends StatelessWidget {
   const EntryWidget({
@@ -14,19 +10,17 @@ class EntryWidget extends StatelessWidget {
 
   final String id;
   final String name;
-  final String ?definition;
-
+  final String? definition;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
       child: Column(children: [
-                            //Text(id),
-                            Text('Entry: $name'),
-                            Text('Definition: $definition'),
-                        
-                          ]),
+        //Text(id),
+        Text('Entry: $name'),
+        Text('Definition: $definition'),
+      ]),
     );
   }
 }

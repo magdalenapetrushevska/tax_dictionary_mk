@@ -1,4 +1,4 @@
-class Entry{
+class Entry {
   final String id;
   final String name;
   final String? definition;
@@ -11,7 +11,6 @@ class Entry{
 
   @override
   String toString() {
-    return 'Activity(id: $id, name: $name, definition: $definition)';
+    return 'Entry(id: $id, name: $name, definition: $definition)';
   }
-
 }
