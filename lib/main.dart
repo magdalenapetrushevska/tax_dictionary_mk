@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tax_dictionary_mk/screens/list_all.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'dart:developer';
 
 void main() {
   runApp(const MyApp());
@@ -32,7 +34,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  ConnectivityResult connectivityResult = ConnectivityResult.none;
+  Connectivity connectivity = Connectivity();
   final myController = TextEditingController();
+
+  @override
+  void initState() {
+    connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+      setState(() {
+        connectivityResult = result;
+      });
+      log(result.name);
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -50,19 +65,41 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            child: TextField(
-              controller: myController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Внесете термин за пребарување',
+          if (connectivityResult == ConnectivityResult.none)
+            Center(child: Text('No connection available')),
+          if (connectivityResult != ConnectivityResult.none) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: TextField(
+                controller: myController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Внесете термин за пребарување',
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AllWordsScreen()));
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30.0, vertical: 15.0),
+                  primary: Colors.pink[400],
+                  shape: const StadiumBorder(),
+                ),
+                child: const Text(
+                  "Пребарај",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ),
+            ),
+            ElevatedButton(
               onPressed: () {
                 Navigator.push(
                     context,
@@ -76,29 +113,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 shape: const StadiumBorder(),
               ),
               child: const Text(
-                "Пребарај",
+                "Сите термини",
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AllWordsScreen()));
-            },
-            style: ElevatedButton.styleFrom(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
-              primary: Colors.pink[400],
-              shape: const StadiumBorder(),
-            ),
-            child: const Text(
-              "Сите термини",
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
-          ),
+          ],
         ],
       ),
       floatingActionButton: FloatingActionButton(

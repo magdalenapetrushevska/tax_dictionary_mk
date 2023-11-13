@@ -38,6 +38,7 @@ dependencies:
   html: ^0.15.4
   http: ^1.1.0
   beautiful_soup_dart: ^0.3.0
+  connectivity_plus: ^5.0.1
 
 dev_dependencies:
   flutter_test:
