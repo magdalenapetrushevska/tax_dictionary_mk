@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -47,21 +48,40 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: myController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Внесете термин за пребарување',
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            child: TextField(
+              controller: myController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Внесете термин за пребарување',
+              ),
             ),
           ),
-        ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AllWordsScreen()));
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 30.0, vertical: 15.0),
+                primary: Colors.pink[400],
+                shape: const StadiumBorder(),
+              ),
+              child: const Text(
+                "Пребарај",
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ),
+          ),
+          ElevatedButton(
             onPressed: () {
               Navigator.push(
                   context,
@@ -75,41 +95,18 @@ class _MyHomePageState extends State<MyHomePage> {
               shape: const StadiumBorder(),
             ),
             child: const Text(
-              "Пребарај",
+              "Сите термини",
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
-                  ),
           ),
-          ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const AllWordsScreen()));
-          },
-          style: ElevatedButton.styleFrom(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
-            primary: Colors.pink[400],
-            shape: const StadiumBorder(),
-          ),
-          child: const Text(
-            "Сите термини",
-            style: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-        ),
         ],
       ),
-            floatingActionButton: FloatingActionButton(
-        // When the user presses the button, show an alert dialog containing
-        // the text that the user has entered into the text field.
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
             context: context,
             builder: (context) {
               return AlertDialog(
-                // Retrieve the text the that user has entered by using the
-                // TextEditingController.
                 content: Text(myController.text),
               );
             },

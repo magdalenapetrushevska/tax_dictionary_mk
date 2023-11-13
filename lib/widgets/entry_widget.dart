@@ -17,18 +17,21 @@ class EntryWidget extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       child: Column(children: [
-        //Text(id),
-        const Text('Entry: ',style: TextStyle(
+        const Text(
+          'Entry: ',
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            //fontSize: 18,
-          ),),
+          ),
+        ),
         Text(
           name,
         ),
-        const Text('Definition: ', style: TextStyle(
+        const Text(
+          'Definition: ',
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            //fontSize: 18,
-          ),),
+          ),
+        ),
         Text(
           definition!,
         ),
