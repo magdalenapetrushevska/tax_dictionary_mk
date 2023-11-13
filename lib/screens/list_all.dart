@@ -4,25 +4,25 @@ import 'package:tax_dictionary_mk/models/entry.dart';
 import 'package:tax_dictionary_mk/widgets/entry_widget.dart';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 
-class AllWordsScreen extends StatefulWidget {
-  const AllWordsScreen({
+class AllEntriesScreen extends StatefulWidget {
+  const AllEntriesScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  _AllWordsScreenState createState() => _AllWordsScreenState();
+  _AllEntriesScreenState createState() => _AllEntriesScreenState();
 }
 
-class _AllWordsScreenState extends State<AllWordsScreen> {
-  _AllWordsScreenState();
+class _AllEntriesScreenState extends State<AllEntriesScreen> {
+  _AllEntriesScreenState();
 
-  late Future _completedActivities;
+  late Future _entries;
 
   Future<List<Entry>> extractData() async {
     final response = await http.Client()
         .get(Uri.parse('http://www.ujp.gov.mk/mk/recnik/poimi'));
 
-    List<Entry> newCompltedActivities = [];
+    List<Entry> newEntries = [];
 
     if (response.statusCode == 200) {
       BeautifulSoup bsMain = BeautifulSoup(response.body);
@@ -59,28 +59,27 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
 
         BeautifulSoup bs = BeautifulSoup(responseForDefinition.body);
 
-        var definition_element = bs
+        var definitionElement = bs
             .find('a', attrs: {'name': baraj})!
             .nextElement
             ?.nextElement
             ?.text;
 
-        var newCompltedActivity = Entry(
+        var newEntry = Entry(
           id: id.toString(),
           name: element.text.trim(),
-          definition: definition_element,
+          definition: definitionElement,
         );
-        newCompltedActivities.add(newCompltedActivity);
+        newEntries.add(newEntry);
         id++;
       }
     }
-    return newCompltedActivities;
+    return newEntries;
   }
 
   @override
   void initState() {
-    _completedActivities = extractData();
-    //_links = extractLinks();
+    _entries = extractData();
     super.initState();
   }
 
@@ -89,7 +88,7 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _completedActivities as Future<List<Entry>>,
+      future: _entries as Future<List<Entry>>,
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {

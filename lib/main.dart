@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tax_dictionary_mk/screens/list_all.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:developer';
+import 'package:http/http.dart' as http;
+import 'package:tax_dictionary_mk/models/entry.dart';
+import 'package:beautiful_soup_dart/beautiful_soup.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -38,6 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Connectivity connectivity = Connectivity();
   final myController = TextEditingController();
 
+  late Future _entries;
+
   @override
   void initState() {
     connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
@@ -55,6 +61,10 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
+    void _searchEntry() {
+
+    }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           if (connectivityResult == ConnectivityResult.none)
-            Center(child: Text('No connection available')),
+            const Center(child: Text('Нема достапна конекција')),
           if (connectivityResult != ConnectivityResult.none) ...[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
@@ -82,10 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AllWordsScreen()));
+                  _searchEntry();
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
@@ -104,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const AllWordsScreen()));
+                        builder: (context) => const AllEntriesScreen()));
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
@@ -136,4 +143,5 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+  
 }
