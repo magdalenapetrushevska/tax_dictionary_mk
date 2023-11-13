@@ -98,55 +98,62 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
             );
           } else if (snapshot.hasData) {
             var extractedData = snapshot.data as List<Entry>;
-            return Scaffold(
-                body: NestedScrollView(
-                    floatHeaderSlivers: true,
-                    headerSliverBuilder:
-                        (BuildContext context, bool innerBoxIsScrolled) {
-                      return <Widget>[
-                        SliverAppBar(
-                          title: const Text('Сите термини'),
-                          backgroundColor: Colors.pink[400],
-                          floating: true,
-                          expandedHeight: 70.0,
-                          forceElevated: innerBoxIsScrolled,
-                        ),
-                      ];
-                    },
-                    body: ListView.builder(
-                        padding: const EdgeInsets.all(8),
-                        itemCount: extractedData.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(
-                            children: [
-                              InkWell(
-                                child: Text(extractedData[index].name),
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        content: EntryWidget(
-                                          id: extractedData[index].id,
-                                          name: extractedData[index].name,
-                                          definition:
-                                              extractedData[index].definition,
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                              const Divider(
-                                color: Colors.black,
-                                height: 25,
-                                thickness: 2,
-                                indent: 25,
-                                endIndent: 25,
-                              ),
-                            ],
-                          );
-                        })));
+            if (extractedData.isNotEmpty) {
+              return Scaffold(
+                  body: NestedScrollView(
+                      floatHeaderSlivers: true,
+                      headerSliverBuilder:
+                          (BuildContext context, bool innerBoxIsScrolled) {
+                        return <Widget>[
+                          SliverAppBar(
+                            title: const Text('Сите термини'),
+                            backgroundColor: Colors.pink[400],
+                            floating: true,
+                            expandedHeight: 70.0,
+                            forceElevated: innerBoxIsScrolled,
+                          ),
+                        ];
+                      },
+                      body: ListView.builder(
+                          padding: const EdgeInsets.all(8),
+                          itemCount: extractedData.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(
+                              children: [
+                                InkWell(
+                                  child: Text(extractedData[index].name),
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: EntryWidget(
+                                            id: extractedData[index].id,
+                                            name: extractedData[index].name,
+                                            definition:
+                                                extractedData[index].definition,
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                                const Divider(
+                                  color: Colors.black,
+                                  height: 25,
+                                  thickness: 2,
+                                  indent: 25,
+                                  endIndent: 25,
+                                ),
+                              ],
+                            );
+                          })));
+            }
+            else{
+              return const Center(
+            child: Text('Податоците моментално не се достапни. Ве молиме обидете се подоцна.'),
+          );
+            }
           }
         } else {
           return const Center(
