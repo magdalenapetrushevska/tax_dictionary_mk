@@ -18,7 +18,7 @@ class EntryWidget extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Column(children: [
         const Text(
-          'Entry: ',
+          'Термин: ',
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -27,7 +27,7 @@ class EntryWidget extends StatelessWidget {
           name,
         ),
         const Text(
-          'Definition: ',
+          'Дефиниција: ',
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
