@@ -41,8 +41,23 @@ class _MyHomePageState extends State<MyHomePage> {
   ConnectivityResult connectivityResult = ConnectivityResult.none;
   Connectivity connectivity = Connectivity();
   final myController = TextEditingController();
+  late Future _resultEntry;
 
-  late Future _entries;
+  // Define Macedonian alphabet letters
+  List<String> macedonianAlphabet = [
+    'а', 'б', 'в', 'г', 'д', 'ѓ', 'е', 'ж', 'з', 'ѕ', 'и', 'ј', 'к', 'л', 'љ',
+    'м', 'н', 'њ', 'о', 'п', 'р', 'с', 'т', 'ќ', 'у', 'ф', 'х', 'ц', 'ч', 'џ', 'ш'
+  ];
+
+  Map<int,String> macedonianAlphabetMap = {};
+
+  void createAlphabetMap() {
+    // Create a dictionary with Macedonian alphabet letters and their corresponding order
+    for (int i = 0; i < macedonianAlphabet.length; i++) {
+      macedonianAlphabetMap[i+1] = macedonianAlphabet[i];
+    }
+  }
+
 
   @override
   void initState() {
@@ -52,6 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       log(result.name);
     });
+    createAlphabetMap();
     super.initState();
   }
 
@@ -61,9 +77,36 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-    void _searchEntry() {
+    Future<Entry> searchEntry() async {
 
+        var firstLetter = myController.text[0].toLowerCase();
+        var correspondingNumber = macedonianAlphabetMap.keys.firstWhere((k) => macedonianAlphabetMap[k] == firstLetter, orElse: () =>  0);
+    if (correspondingNumber != 0) {
+      final response = await http.Client().get(Uri.parse(
+          'http://www.ujp.gov.mk/mk/recnik/poim/' +
+              correspondingNumber.toString()));
+
+      if (response.statusCode == 200) {
+        BeautifulSoup bsMain = BeautifulSoup(response.body);
+
+        var retreivedData =
+          bsMain.findAll('div', attrs: {'class': 'dict_term dict_parno'}).toList();
+
+          for (var element in retreivedData) {
+            if(element.innerHtml.toLowerCase() == myController.text.toLowerCase()){
+              print('Najden e : '+element.innerHtml);
+              return Entry(
+          id: '1',
+          name: element.text.trim(),
+          definition: 'Example definition',
+        );
+            }
+          }
+
+      }
     }
+    return Entry(id: '0', name:'null', definition:'null');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  _searchEntry();
+                  searchEntry();
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
