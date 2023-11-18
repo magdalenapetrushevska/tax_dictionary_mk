@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="tax_dictionary_mk"
+        android:label="Даночен речник"
         android:name="${applicationName}"
         android:icon="@mipmap/logo_tax_dict_mk">
         <activity
