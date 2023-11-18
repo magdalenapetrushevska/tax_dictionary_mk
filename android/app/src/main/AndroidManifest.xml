@@ -2,7 +2,7 @@
     <application
         android:label="tax_dictionary_mk"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/logo_tax_dict_mk">
         <activity
             android:name=".MainActivity"
             android:exported="true"
