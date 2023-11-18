@@ -3,7 +3,6 @@ import 'package:tax_dictionary_mk/screens/list_all.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import 'package:tax_dictionary_mk/models/entry.dart';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:tax_dictionary_mk/widgets/entry_widget.dart';
 
@@ -41,7 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
   ConnectivityResult connectivityResult = ConnectivityResult.none;
   Connectivity connectivity = Connectivity();
   final myController = TextEditingController();
-  late Future _resultEntry;
 
   // Define Macedonian alphabet letters
   List<String> macedonianAlphabet = [
@@ -125,6 +123,10 @@ class _MyHomePageState extends State<MyHomePage> {
           if (element.innerHtml.toLowerCase() ==
               myController.text.toLowerCase()) {
             found = true;
+
+            var definitionElement =
+                element.nextElement?.nextElement?.innerHtml.trim();
+
             showDialog(
               context: context,
               builder: (context) {
@@ -132,11 +134,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   content: EntryWidget(
                     id: '0',
                     name: element.innerHtml,
-                    definition: 'Example definition',
+                    definition: definitionElement,
                   ),
                 );
               },
             );
+            // reset the value for user input
             myController.text = '';
             return;
           }
@@ -152,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         },
       );
+      // reset the value for user input
       myController.text = '';
     }
   }
@@ -217,20 +221,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: Text(myController.text),
-              );
-            },
-          );
-        },
-        tooltip: 'Show me the value!',
-        child: const Icon(Icons.text_fields),
       ),
     );
   }
