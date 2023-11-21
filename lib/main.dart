@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tax_dictionary_mk/db_connection/db_connect.dart';
+import 'package:tax_dictionary_mk/models/entry.dart';
 import 'package:tax_dictionary_mk/screens/list_all.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:developer';
@@ -6,7 +8,36 @@ import 'package:http/http.dart' as http;
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:tax_dictionary_mk/widgets/entry_widget.dart';
 
-void main() {
+
+Future<void> main() async {
+  var db = DBconnect();
+// db.addEntry(
+//      Entry(id:'1',name:'Агент', definition:'Финансиска институција од земјата или од странство која, во име и за сметка на Министерство за финансии, може да извршува определени работи утврдени со закон.'), );
+
+// db.addEntry(
+//      Entry(id:'2',name:'Аконтација', definition:'Износ на даночен долг кој обврзникот го плаќа во текот на годината во вид на месечни или тримесечни износи, до конечното намирување на даночната обврска.'), );
+
+// db.addEntry(
+//      Entry(id:'2',name:'Акција', definition:'Хартија од вредност (која може да ја издаваат акционерското друштво и командитното друштво со акции) во која е претставен дел од основната главнина и во која се отелотворуваат правата на акционерот кој, како сопственик на акцијата, не е доверител на друштвото, ниту сопственик на еден дел од имотот на друштвото.'), );
+
+
+List resultEntries;
+resultEntries = await db.fetchEntries();
+
+//var dataaa = resultEntries as List<Entry>;
+
+
+for (var element in resultEntries) {
+  print(element.name);
+}
+
+// List dailyTaskList = await getDailyTask(DateTime.now());
+// // Now you can iterate on this list.
+// for (var task in dailyTaskList) {
+//   // do something
+// }
+
+
   runApp(const MyApp());
 }
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "725707887576",
+    "project_id": "tax-dictionary-mk",
+    "storage_bucket": "tax-dictionary-mk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725707887576:android:3c6d44fc63feef9359d8ad",
+        "android_client_info": {
+          "package_name": "com.example.tax_dictionary_mk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjtz2xOn9X78-1BU2TDjgJQE8j24D2sgI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
