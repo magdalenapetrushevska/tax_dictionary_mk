@@ -30,7 +30,6 @@ class DBconnect {
           name: value['name'],
           definition: value['definition'],
         );
-
         newEntries.add(newEntry);
       });
       return newEntries;

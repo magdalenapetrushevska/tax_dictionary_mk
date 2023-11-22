@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tax_dictionary_mk/db_connection/db_connect.dart';
 import 'package:tax_dictionary_mk/models/entry.dart';
 import 'package:tax_dictionary_mk/widgets/entry_widget.dart';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
@@ -16,70 +17,78 @@ class AllEntriesScreen extends StatefulWidget {
 class _AllEntriesScreenState extends State<AllEntriesScreen> {
   _AllEntriesScreenState();
 
+   var db = DBconnect();
+
   late Future _entries;
 
-  Future<List<Entry>> extractData() async {
-    final response = await http.Client()
-        .get(Uri.parse('http://www.ujp.gov.mk/mk/recnik/poimi'));
 
-    List<Entry> newEntries = [];
-
-    if (response.statusCode == 200) {
-      BeautifulSoup bsMain = BeautifulSoup(response.body);
-      var startString = 'http://www.ujp.gov.mk';
-
-      var retreivedData =
-          bsMain.findAll('div', attrs: {'class': 'tbrow'}).toList();
-
-      int id = 0;
-
-      for (var element in retreivedData) {
-        var finalLink = '';
-        var pp = element.children;
-        var dol = element.children.length;
-        var baraj = '';
-        if (dol == 2) {
-          var startIndex = pp[1].outerHtml.indexOf('"');
-          var endIndex = pp[1].outerHtml.lastIndexOf('"');
-          var tailString = pp[1].outerHtml.substring(startIndex + 1, endIndex);
-          finalLink = startString + tailString;
-          var hashTagIndex = tailString.indexOf('#');
-          baraj = tailString.substring(hashTagIndex + 1);
-        } else {
-          var startIndex = pp[0].outerHtml.indexOf('"');
-          var endIndex = pp[0].outerHtml.lastIndexOf('"');
-          var tailString = pp[0].outerHtml.substring(startIndex + 1, endIndex);
-          finalLink = startString + tailString;
-          var hashTagIndex = tailString.indexOf('#');
-          baraj = tailString.substring(hashTagIndex + 1);
-        }
-
-        final responseForDefinition =
-            await http.Client().get(Uri.parse(finalLink));
-
-        BeautifulSoup bs = BeautifulSoup(responseForDefinition.body);
-
-        var definitionElement = bs
-            .find('a', attrs: {'name': baraj})!
-            .nextElement
-            ?.nextElement
-            ?.text;
-
-        var newEntry = Entry(
-          id: id.toString(),
-          name: element.text.trim(),
-          definition: definitionElement,
-        );
-        newEntries.add(newEntry);
-        id++;
-      }
-    }
-    return newEntries;
+Future<List<Entry>> getData() async {
+    return db.fetchEntries();
   }
+
+
+  // Future<List<Entry>> extractData() async {
+  //   final response = await http.Client()
+  //       .get(Uri.parse('http://www.ujp.gov.mk/mk/recnik/poimi'));
+
+  //   List<Entry> newEntries = [];
+
+  //   if (response.statusCode == 200) {
+  //     BeautifulSoup bsMain = BeautifulSoup(response.body);
+  //     var startString = 'http://www.ujp.gov.mk';
+
+  //     var retreivedData =
+  //         bsMain.findAll('div', attrs: {'class': 'tbrow'}).toList();
+
+  //     int id = 0;
+
+  //     for (var element in retreivedData) {
+  //       var finalLink = '';
+  //       var pp = element.children;
+  //       var dol = element.children.length;
+  //       var baraj = '';
+  //       if (dol == 2) {
+  //         var startIndex = pp[1].outerHtml.indexOf('"');
+  //         var endIndex = pp[1].outerHtml.lastIndexOf('"');
+  //         var tailString = pp[1].outerHtml.substring(startIndex + 1, endIndex);
+  //         finalLink = startString + tailString;
+  //         var hashTagIndex = tailString.indexOf('#');
+  //         baraj = tailString.substring(hashTagIndex + 1);
+  //       } else {
+  //         var startIndex = pp[0].outerHtml.indexOf('"');
+  //         var endIndex = pp[0].outerHtml.lastIndexOf('"');
+  //         var tailString = pp[0].outerHtml.substring(startIndex + 1, endIndex);
+  //         finalLink = startString + tailString;
+  //         var hashTagIndex = tailString.indexOf('#');
+  //         baraj = tailString.substring(hashTagIndex + 1);
+  //       }
+
+  //       final responseForDefinition =
+  //           await http.Client().get(Uri.parse(finalLink));
+
+  //       BeautifulSoup bs = BeautifulSoup(responseForDefinition.body);
+
+  //       var definitionElement = bs
+  //           .find('a', attrs: {'name': baraj})!
+  //           .nextElement
+  //           ?.nextElement
+  //           ?.text;
+
+  //       var newEntry = Entry(
+  //         id: id.toString(),
+  //         name: element.text.trim(),
+  //         definition: definitionElement,
+  //       );
+  //       newEntries.add(newEntry);
+  //       id++;
+  //     }
+  //   }
+  //   return newEntries;
+  // }
 
   @override
   void initState() {
-    _entries = extractData();
+    _entries = getData();
     super.initState();
   }
 
